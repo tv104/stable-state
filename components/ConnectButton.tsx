@@ -6,13 +6,20 @@ import { Button } from './Button'
 import { formatAddress } from '@/lib/format-address'
 import { useMounted } from '@/hooks/useMounted'
 
+function hasUid(connector: unknown): connector is { uid: string } {
+    return !!connector && typeof connector === 'object' && 'uid' in connector
+}
+
 export function ConnectButton() {
     const [isOpen, setIsOpen] = useState(false)
     const mounted = useMounted()
     const account = useConnection()
     const connectors = useConnectors()
-    const { mutate: connect } = useConnect()
+    const { mutate: connect, error, isPending, variables, reset } = useConnect()
     const { mutate: disconnect } = useDisconnect()
+
+    const isConnecting = (connectorId: string) =>
+        isPending && hasUid(variables?.connector) && variables.connector.uid === connectorId
 
     if (!mounted) {
         return <Button disabled>Initializing...</Button>
@@ -34,7 +41,10 @@ export function ConnectButton() {
 
     return (
         <>
-            <Button onClick={() => setIsOpen(true)}>Connect Wallet</Button>
+            <Button onClick={() => {
+                reset()
+                setIsOpen(true)
+            }}>Connect Wallet</Button>
 
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -52,15 +62,23 @@ export function ConnectButton() {
                             {connectors.map((connector) => (
                                 <Button
                                     key={connector.uid}
-                                    onClick={() => {
-                                        connect({ connector })
-                                        setIsOpen(false)
-                                    }}
+                                    onClick={() => connect({ connector }, {
+                                        onSuccess: () => setIsOpen(false)
+                                    })}
+                                    disabled={isPending}
                                     className="w-full"
                                 >
                                     {connector.name}
+                                    {isConnecting(connector.uid) && " (Connecting...)"}
                                 </Button>
                             ))}
+                            {error && (
+                                <div className="text-red-500 text-sm mt-2 px-2">
+                                    {error.name === 'UserRejectedRequestError'
+                                        ? 'Connection rejected by user.'
+                                        : error.message}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
