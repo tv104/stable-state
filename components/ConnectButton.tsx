@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useConnection, useConnect, useDisconnect, useConnectors } from 'wagmi'
 import { Button } from './Button'
+import { Modal } from './Modal'
 import { formatAddress } from '@/lib/format-address'
 import { useMounted } from '@/hooks/useMounted'
 
@@ -14,16 +15,25 @@ export function ConnectButton() {
     const [isOpen, setIsOpen] = useState(false)
     const mounted = useMounted()
     const account = useConnection()
-    const connectors = useConnectors()
-    const { mutate: connect, error, isPending, variables, reset } = useConnect()
+    const allConnectors = useConnectors()
+    const { mutate: connect, isPending, error, variables, reset } = useConnect()
     const { mutate: disconnect } = useDisconnect()
 
     const isConnecting = (connectorId: string) =>
         isPending && hasUid(variables?.connector) && variables.connector.uid === connectorId
 
-    if (!mounted) {
-        return <Button disabled>Initializing...</Button>
-    }
+    // If we detect specific wallets (e.g. "MetaMask" via EIP-6963), hide the generic "Injected" fallback
+    const connectors = allConnectors.filter((c) => {
+        if (c.id === 'injected') {
+            const hasSpecificWallets = allConnectors.some(
+                (other) => other.id !== 'injected' && other.type === 'injected'
+            )
+            return !hasSpecificWallets
+        }
+        return true
+    })
+
+    if (!mounted) return <Button disabled>Loading...</Button>
 
     if (account.isConnected) {
         return (
@@ -66,10 +76,27 @@ export function ConnectButton() {
                                         onSuccess: () => setIsOpen(false)
                                     })}
                                     disabled={isPending}
-                                    className="w-full"
+                                    className="w-full justify-start gap-2"
                                 >
-                                    {connector.name}
-                                    {isConnecting(connector.uid) && " (Connecting...)"}
+                                    {connector.icon ? (
+                                        <img
+                                            src={connector.icon}
+                                            alt={connector.name}
+                                            className="w-6 h-6 rounded"
+                                        />
+                                    ) : connector.id === 'walletConnect' ? (
+                                        <img
+                                            src="/walletconnect.svg"
+                                            alt={connector.name}
+                                            className="w-6 h-6 rounded"
+                                        />
+                                    ) : (
+                                        <div className="w-6 h-6 bg-zinc-200 rounded" />
+                                    )}
+                                    <span>
+                                        {connector.id === 'injected' ? 'Browser Wallet' : connector.name}
+                                        {isConnecting(connector.uid) && " (Connecting...)"}
+                                    </span>
                                 </Button>
                             ))}
                             {error && (

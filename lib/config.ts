@@ -15,7 +15,7 @@ export const config = createConfig({
             metadata: {
                 name: 'Stable State',
                 description: 'Demo app for displaying ETH and selected stablecoin balances on mainnet and Arbitrum',
-                url: 'https://tv104.github.io/stable-state',
+                url: typeof window !== 'undefined' ? window.location.origin : 'https://tv104.github.io/stable-state',
                 icons: ['https://avatars.githubusercontent.com/u/1164786']
             }
         }),
