@@ -9,6 +9,7 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": "off",
+      "@next/next/no-img-element": "off",
     },
   },
   // Override default ignores of eslint-config-next.

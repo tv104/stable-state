@@ -8,7 +8,7 @@ describe('formatAddress', () => {
     })
 
     it('should return empty string for non-string input', () => {
-        // @ts-ignore
+        // @ts-expect-error - Testing invalid input
         expect(formatAddress(123)).toBe('')
     })
 
