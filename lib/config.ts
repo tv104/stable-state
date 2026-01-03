@@ -1,28 +1,30 @@
-import { http, createConfig, cookieStorage, createStorage } from 'wagmi'
-import { mainnet, arbitrum, base } from 'wagmi/chains'
+import { http, createConfig } from 'wagmi'
+import { mainnet, arbitrum } from 'wagmi/chains'
 import { injected, walletConnect } from 'wagmi/connectors'
+import { SUPPORTED_CHAINS } from '@/lib/constants'
 
 export const config = createConfig({
-    chains: [mainnet, arbitrum, base],
-    storage: createStorage({
-        storage: cookieStorage,
-    }),
+    chains: SUPPORTED_CHAINS,
     ssr: false,
     connectors: [
         injected(),
-        walletConnect({
-            projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
-            metadata: {
-                name: 'Stable State',
-                description: 'Demo app for displaying ETH and selected stablecoin balances on mainnet and Arbitrum',
-                url: typeof window !== 'undefined' ? window.location.origin : 'https://tv104.github.io/stable-state',
-                icons: ['https://avatars.githubusercontent.com/u/1164786']
-            }
-        }),
+        ...(typeof window !== 'undefined'
+            ? [
+                walletConnect({
+                    projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || '',
+                    metadata: {
+                        name: 'Stable State',
+                        description:
+                            'Demo app for displaying ETH and selected stablecoin balances on mainnet and Arbitrum',
+                        url: window.location.origin,
+                        icons: ['https://avatars.githubusercontent.com/u/1164786'],
+                    },
+                }),
+            ]
+            : []),
     ],
     transports: {
         [mainnet.id]: http(`https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
         [arbitrum.id]: http(`https://arb-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
-        [base.id]: http(`https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
     },
 })
