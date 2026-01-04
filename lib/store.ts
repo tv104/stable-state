@@ -16,7 +16,7 @@ const generateBalances = (): Balances => {
         result[chainId] = {};
         const chainTokens = getChainTokenEntries(chainId);
         chainTokens.forEach(([symbol]) => {
-            result[chainId]![symbol] = (Math.random() * 100000).toFixed(2);
+            result[chainId]![symbol] = (Math.random() * 10_000).toFixed(2);
         });
     });
     return result;
