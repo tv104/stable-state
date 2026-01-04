@@ -43,7 +43,7 @@ export function ChainBreakdown({ stats, isLoading }: ChainBreakdownProps) {
                             <tr key={chain.chainId} className="group">
                                 <td>
                                     <div className="flex items-center gap-3">
-                                        <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gray-50 p-2">
+                                        <div className="relative h-8 w-8 overflow-hidden bg-gray-50 p-2">
                                             <Image
                                                 src={getChainIcon(chain.chainId)}
                                                 alt={chain.name}

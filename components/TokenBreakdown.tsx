@@ -47,7 +47,7 @@ export function TokenBreakdown({ balances, isLoading }: TokenBreakdownProps) {
                             <tr key={token.symbol} className="group">
                                 <td>
                                     <div className="flex items-center gap-3">
-                                        <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gray-50 p-2">
+                                        <div className="relative h-8 w-8 overflow-hidden bg-gray-50 p-2">
                                             <Image
                                                 src={getTokenIcon(token.symbol)}
                                                 alt={token.symbol}
