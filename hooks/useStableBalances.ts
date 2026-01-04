@@ -1,7 +1,7 @@
 import { useConnection, useReadContracts } from 'wagmi'
 import { formatUnits } from 'viem'
 import { useMemo } from 'react'
-import { TOKENS, ERC20_ABI, SUPPORTED_CHAINS } from '@/lib/constants'
+import { ERC20_ABI, SUPPORTED_CHAINS, type TokenSymbol, getChainTokenEntries } from '@/lib/constants'
 
 export function useStableBalances() {
     const { address } = useConnection()
@@ -15,13 +15,13 @@ export function useStableBalances() {
         }
 
         const contracts = []
-        const meta = []
+        const meta: { chainId: number; symbol: TokenSymbol; decimals: number }[] = []
 
         for (const chain of SUPPORTED_CHAINS) {
             const chainId = chain.id
-            const chainTokens = TOKENS[chainId]
+            const chainTokens = getChainTokenEntries(chainId)
 
-            for (const [symbol, token] of Object.entries(chainTokens)) {
+            for (const [symbol, token] of chainTokens) {
                 contracts.push({
                     address: token.address,
                     abi: ERC20_ABI,
@@ -47,7 +47,7 @@ export function useStableBalances() {
     const balances = useMemo(() => {
         if (!data) return {}
 
-        const result: Record<number, Record<string, string | null>> = {}
+        const result: Record<number, Partial<Record<TokenSymbol, string | null>>> = {}
 
         data.forEach((res, index) => {
             const { chainId, symbol, decimals } = meta[index]
