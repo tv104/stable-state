@@ -13,7 +13,7 @@ export function MockDataControls() {
                     type="checkbox"
                     checked={isMockDataEnabled}
                     onChange={toggleMockData}
-                    className="rounded border-gray-300"
+                    className="rounded border-gray-300 accent-zinc-800 w-4 h-4"
                 />
                 Mock Data
             </label>
@@ -21,7 +21,7 @@ export function MockDataControls() {
                 <Button
                     onClick={regenerateMockData}
                 >
-                    Regenerate Mock Data
+                    Regenerate Data
                 </Button>
             )}
         </div>
