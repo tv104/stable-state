@@ -1,11 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useConnection, useConnect, useDisconnect, useConnectors } from 'wagmi'
 import { Button } from './Button'
 import { Modal } from './Modal'
 import { formatAddress } from '@/lib/format-address'
 import { useMounted } from '@/hooks/useMounted'
+import { useToast } from './ToastProvider'
 
 function hasUid(connector: unknown): connector is { uid: string } {
     return !!connector && typeof connector === 'object' && 'uid' in connector
@@ -18,6 +19,16 @@ export function ConnectButton() {
     const allConnectors = useConnectors()
     const { mutate: connect, isPending, error, variables, reset } = useConnect()
     const { mutate: disconnect } = useDisconnect()
+    const { showToast } = useToast()
+
+    useEffect(() => {
+        if (error) {
+            const message = error.name === 'UserRejectedRequestError'
+                ? 'Connection rejected by user.'
+                : error.message
+            showToast(message, 'error')
+        }
+    }, [error, showToast])
 
     const isConnecting = (connectorId: string) =>
         isPending && hasUid(variables?.connector) && variables.connector.uid === connectorId
@@ -61,7 +72,7 @@ export function ConnectButton() {
                 onClose={() => setIsOpen(false)}
                 title="Connect Wallet"
             >
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-3">
                     {connectors.map((connector) => (
                         <Button
                             key={connector.uid}
@@ -69,7 +80,7 @@ export function ConnectButton() {
                                 onSuccess: () => setIsOpen(false)
                             })}
                             disabled={isPending}
-                            className="w-full justify-start gap-2"
+                            className="w-full justify-start gap-3"
                         >
                             {connector.icon ? (
                                 <img
@@ -92,13 +103,6 @@ export function ConnectButton() {
                             </span>
                         </Button>
                     ))}
-                    {error && (
-                        <div className="text-red-500 text-sm mt-2 px-2">
-                            {error.name === 'UserRejectedRequestError'
-                                ? 'Connection rejected by user.'
-                                : error.message}
-                        </div>
-                    )}
                 </div>
             </Modal>
         </>

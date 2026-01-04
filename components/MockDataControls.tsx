@@ -1,3 +1,5 @@
+"use client"
+
 import { useMockDataStore } from '@/lib/store';
 import { Button } from './Button';
 
