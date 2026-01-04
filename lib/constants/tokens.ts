@@ -1,5 +1,5 @@
 import { type Address } from 'viem'
-import { mainnet, arbitrum } from 'wagmi/chains'
+import { mainnet, arbitrum, base } from 'wagmi/chains'
 import { type SupportedChainId } from './chains'
 
 export const TOKEN_METADATA = {
@@ -42,7 +42,12 @@ export const TOKENS: Record<SupportedChainId, Record<TokenSymbol, { address: Add
         USDC: { address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', decimals: 6 },
         USDT: { address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', decimals: 6 },
         USDe: { address: '0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34', decimals: 18 },
-    }
+    },
+    [base.id]: {
+        USDC: { address: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', decimals: 6 },
+        USDT: { address: '0xfde4c96c8593536e31f229ea8f37b2ada2699bb2', decimals: 6 },
+        USDe: { address: '0x5d3a1ff2b6bab83b63cd9ad0787074081a52ef34', decimals: 18 },
+    },
 }
 
 export function getChainTokenEntries(chainId: SupportedChainId) {
