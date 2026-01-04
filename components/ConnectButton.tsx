@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import { useConnection, useConnect, useDisconnect, useConnectors } from 'wagmi'
 import { Button } from './Button'
 import { Modal } from './Modal'
@@ -83,16 +84,20 @@ export function ConnectButton() {
                             className="w-full justify-start gap-3"
                         >
                             {connector.icon ? (
-                                <img
-                                    src={connector.icon}
+                                <Image
+                                    src={connector.icon.trim()}
                                     alt={connector.name}
-                                    className="w-6 h-6 rounded"
+                                    width={24}
+                                    height={24}
+                                    className="rounded"
                                 />
                             ) : connector.id === 'walletConnect' ? (
-                                <img
+                                <Image
                                     src="/walletconnect.svg"
                                     alt={connector.name}
-                                    className="w-6 h-6 rounded"
+                                    width={24}
+                                    height={24}
+                                    className="rounded"
                                 />
                             ) : (
                                 <div className="w-6 h-6 bg-zinc-200 rounded" />

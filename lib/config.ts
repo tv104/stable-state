@@ -16,8 +16,8 @@ export const config = createConfig({
                         name: 'Stable State',
                         description:
                             'A demo app for displaying stablecoin balances across multiple chains',
-                        url: window.location.origin,
-                        icons: [`${window.location.origin}/logo.webp`],
+                        url: window.location.origin + (process.env.NEXT_PUBLIC_BASE_PATH || ''),
+                        icons: [`${window.location.origin}${process.env.NEXT_PUBLIC_BASE_PATH || ''}/logo.webp`],
                     },
                 }),
             ]
