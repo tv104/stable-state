@@ -9,38 +9,32 @@ interface ProgressBarProps {
 export function ProgressBar({ value, classes }: ProgressBarProps) {
     const { foreground, background } = classes;
     const percentage = Math.min(Math.max(value, 0), 100);
-
-    const textStyle = {
-        left: `${percentage}%`,
-        transform: `translateX(-${percentage}%)`,
-    };
+    const showInside = percentage > 60;
     const textContent = `${percentage.toFixed(1)}%`;
-    const textClasses = "absolute top-0 flex h-full items-center px-2 text-xs font-bold whitespace-nowrap transition-all duration-500 ease-out";
 
     return (
         <div className={`relative h-8 w-full rounded-full ${background}`}>
-            <div className="absolute inset-0 overflow-hidden rounded-full">
-                <span
-                    className={`${textClasses} text-gray-600`}
-                    style={textStyle}
-                >
-                    {textContent}
-                </span>
-            </div>
             <div
-                className={`absolute left-0 top-0 h-full overflow-hidden rounded-full ${foreground} transition-all duration-500 ease-out`}
+                className={`absolute left-0 top-0 h-full overflow-hidden rounded-full ${foreground} transition-all duration-500 ease-out flex items-center justify-end px-2`}
                 style={{ width: `${percentage}%` }}
             >
-                <span
-                    className={`${textClasses} text-white`}
-                    style={{
-                        left: '100%',
-                        transform: `translateX(-${percentage}%)`,
-                    }}
-                >
-                    {textContent}
-                </span>
+                {showInside && (
+                    <span className="text-xs font-bold text-white whitespace-nowrap">
+                        {textContent}
+                    </span>
+                )}
             </div>
+
+            {!showInside && (
+                <div
+                    className="absolute top-0 h-full flex items-center px-2 transition-all duration-500 ease-out"
+                    style={{ left: `${percentage}%`, transform: 'translateX(0)' }}
+                >
+                    <span className={`text-xs font-bold text-gray-600 whitespace-nowrap ${percentage === 0 ? 'ml-3' : 'ml-1'}`}>
+                        {textContent}
+                    </span>
+                </div>
+            )}
         </div>
     );
 }
