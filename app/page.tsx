@@ -1,7 +1,9 @@
 "use client";
+import { useState, useEffect } from 'react';
 import { Header } from "@/components/Header";
 import { TokenBreakdown } from "@/components/TokenBreakdown";
 import { ChainBreakdown } from "@/components/ChainBreakdown";
+import { Toast } from "@/components/Toast";
 import { useStableBalances } from '@/hooks/useStableBalances';
 import { useMounted } from '@/hooks/useMounted';
 import { useTokenStats } from '@/hooks/useTokenStats';
@@ -12,6 +14,14 @@ export default function Home() {
   const { isLoading, error, balances } = useStableBalances();
   const formattedBalances = useTokenStats(balances);
   const chainStats = useChainStats(balances);
+  const [showToast, setShowToast] = useState(false);
+
+  useEffect(() => {
+    if (error) {
+      setShowToast(true);
+    }
+  }, [error]);
+
   console.log('useStableBalances()', { isLoading, error, balances })
 
   return (
@@ -25,14 +35,19 @@ export default function Home() {
         <TokenBreakdown
           balances={mounted ? formattedBalances : []}
           isLoading={mounted ? isLoading : false}
-          error={mounted ? error : null}
         />
         <ChainBreakdown
           stats={mounted ? chainStats : []}
           isLoading={mounted ? isLoading : false}
-          error={mounted ? error : null}
         />
       </main>
+      {mounted && showToast && error && (
+        <Toast
+          message={`Error loading balances: ${error.message}`}
+          type="error"
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }

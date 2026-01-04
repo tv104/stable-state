@@ -14,10 +14,9 @@ interface TokenBalance {
 interface TokenBreakdownProps {
     balances: TokenBalance[];
     isLoading?: boolean;
-    error?: Error | null;
 }
 
-export function TokenBreakdown({ balances, isLoading, error }: TokenBreakdownProps) {
+export function TokenBreakdown({ balances, isLoading }: TokenBreakdownProps) {
     const getTokenIcon = (symbol: TokenSymbol) => {
         return TOKEN_METADATA[symbol].icon;
     };
@@ -79,11 +78,6 @@ export function TokenBreakdown({ balances, isLoading, error }: TokenBreakdownPro
                     </tbody>
                 </table>
             </div>
-            {error && (
-                <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                    Error loading balances: {error.message}
-                </div>
-            )}
         </Paper>
     );
 }

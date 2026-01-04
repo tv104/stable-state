@@ -9,10 +9,9 @@ import { ChainStat } from '@/hooks/useChainStats';
 interface ChainBreakdownProps {
     stats: ChainStat[];
     isLoading?: boolean;
-    error?: Error | null;
 }
 
-export function ChainBreakdown({ stats, isLoading, error }: ChainBreakdownProps) {
+export function ChainBreakdown({ stats, isLoading }: ChainBreakdownProps) {
     const getChainIcon = (chainId: SupportedChainId) => {
         return CHAIN_METADATA[chainId].icon;
     };
@@ -75,11 +74,6 @@ export function ChainBreakdown({ stats, isLoading, error }: ChainBreakdownProps)
                     </tbody>
                 </table>
             </div>
-            {error && (
-                <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/20 dark:text-red-400">
-                    Error loading balances: {error.message}
-                </div>
-            )}
         </Paper>
     );
 }
