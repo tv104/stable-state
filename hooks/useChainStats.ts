@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CHAIN_METADATA, SUPPORTED_CHAINS, SupportedChainId } from '@/lib/constants/chains';
+import { CHAIN_METADATA, SUPPORTED_CHAIN_IDS, SupportedChainId } from '@/lib/constants/chains';
 import { ChainBalances } from './useTokenStats';
 
 export interface ChainStat {
@@ -11,27 +11,29 @@ export interface ChainStat {
 
 export function useChainStats(balances: ChainBalances) {
     return useMemo(() => {
-        const totals = SUPPORTED_CHAINS.reduce((acc, chain) => {
-            acc[chain.id] = 0;
+        const totals = SUPPORTED_CHAIN_IDS.reduce((acc, chainId) => {
+            acc[chainId] = 0;
             return acc;
         }, {} as Record<SupportedChainId, number>);
 
         let totalBalance = 0;
 
-        SUPPORTED_CHAINS.forEach((chain) => {
-            const chainTokens = balances[chain.id];
+        SUPPORTED_CHAIN_IDS.forEach((chainId) => {
+            const chainTokens = balances[chainId];
             if (chainTokens) {
                 const chainTotal = Object.values(chainTokens).reduce((sum, val) => sum + Number(val || 0), 0);
-                totals[chain.id] = chainTotal;
+                totals[chainId] = chainTotal;
                 totalBalance += chainTotal;
             }
         });
 
-        return SUPPORTED_CHAINS.map((chain) => ({
-            chainId: chain.id,
-            name: CHAIN_METADATA[chain.id].name,
-            balance: totals[chain.id],
-            allocation: totalBalance > 0 ? (totals[chain.id] / totalBalance) * 100 : 0
-        }));
+        return SUPPORTED_CHAIN_IDS.map((chainId) => {
+            return {
+                chainId,
+                name: CHAIN_METADATA[chainId].name,
+                balance: totals[chainId],
+                allocation: totalBalance > 0 ? (totals[chainId] / totalBalance) * 100 : 0
+            };
+        });
     }, [balances]);
 }

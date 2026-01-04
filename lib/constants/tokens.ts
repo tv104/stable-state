@@ -5,7 +5,6 @@ import { type SupportedChainId } from './chains'
 export const TOKEN_METADATA = {
     USDC: {
         icon: '/usdc-logo.svg',
-        colorVar: 'token-usdc',
         classes: {
             foreground: 'bg-token-usdc',
             background: 'bg-token-usdc/20'
@@ -13,7 +12,6 @@ export const TOKEN_METADATA = {
     },
     USDT: {
         icon: '/usdt-logo.svg',
-        colorVar: 'token-usdt',
         classes: {
             foreground: 'bg-token-usdt',
             background: 'bg-token-usdt/20'
@@ -21,7 +19,6 @@ export const TOKEN_METADATA = {
     },
     USDe: {
         icon: '/usde-logo.svg',
-        colorVar: 'token-usde',
         classes: {
             foreground: 'bg-token-usde',
             background: 'bg-token-usde/20'
