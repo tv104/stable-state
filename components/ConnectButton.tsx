@@ -93,7 +93,7 @@ export function ConnectButton() {
                                 />
                             ) : connector.id === 'walletConnect' ? (
                                 <Image
-                                    src="/walletconnect.svg"
+                                    src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/walletconnect.svg`}
                                     alt={connector.name}
                                     width={24}
                                     height={24}

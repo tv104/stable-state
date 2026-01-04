@@ -8,7 +8,7 @@ export function Header() {
             <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 px-6 py-4 sm:flex-row sm:justify-between">
                 <div className="flex items-center">
                     <Image
-                        src="/logo-full.webp"
+                        src={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/logo-full.webp`}
                         alt="Stable State Logo"
                         width={673}
                         height={256}

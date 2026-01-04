@@ -1,10 +1,12 @@
 import { mainnet, arbitrum, base, type Chain } from 'wagmi/chains'
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export const CHAIN_METADATA = {
     [mainnet.id]: {
         chain: mainnet,
         name: 'Ethereum',
-        icon: '/ethereum-logo.svg',
+        icon: `${basePath}/ethereum-logo.svg`,
         classes: {
             foreground: 'bg-chain-mainnet',
             background: 'bg-chain-mainnet/20'
@@ -13,7 +15,7 @@ export const CHAIN_METADATA = {
     [arbitrum.id]: {
         chain: arbitrum,
         name: 'Arbitrum',
-        icon: '/arbitrum-logo.svg',
+        icon: `${basePath}/arbitrum-logo.svg`,
         classes: {
             foreground: 'bg-chain-arbitrum',
             background: 'bg-chain-arbitrum/20'
@@ -22,7 +24,7 @@ export const CHAIN_METADATA = {
     [base.id]: {
         chain: base,
         name: 'Base',
-        icon: '/base-logo.svg',
+        icon: `${basePath}/base-logo.svg`,
         classes: {
             foreground: 'bg-chain-base',
             background: 'bg-chain-base/20'

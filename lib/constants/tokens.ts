@@ -2,23 +2,25 @@ import { type Address } from 'viem'
 import { mainnet, arbitrum, base } from 'wagmi/chains'
 import { type SupportedChainId } from './chains'
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export const TOKEN_METADATA = {
     USDC: {
-        icon: '/usdc-logo.svg',
+        icon: `${basePath}/usdc-logo.svg`,
         classes: {
             foreground: 'bg-token-usdc',
             background: 'bg-token-usdc/20'
         }
     },
     USDT: {
-        icon: '/usdt-logo.svg',
+        icon: `${basePath}/usdt-logo.svg`,
         classes: {
             foreground: 'bg-token-usdt',
             background: 'bg-token-usdt/20'
         }
     },
     USDe: {
-        icon: '/usde-logo.svg',
+        icon: `${basePath}/usde-logo.svg`,
         classes: {
             foreground: 'bg-token-usde',
             background: 'bg-token-usde/20'
