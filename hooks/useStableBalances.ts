@@ -1,7 +1,7 @@
 import { useConnection, useReadContracts } from 'wagmi'
-import { formatUnits } from 'viem'
+import { formatUnits, erc20Abi } from 'viem'
 import { useMemo } from 'react'
-import { ERC20_ABI, SUPPORTED_CHAIN_IDS, type TokenSymbol, getChainTokenEntries } from '@/lib/constants'
+import { SUPPORTED_CHAIN_IDS, type TokenSymbol, getChainTokenEntries } from '@/lib/constants'
 
 export function useStableBalances() {
     const { address } = useConnection()
@@ -23,7 +23,7 @@ export function useStableBalances() {
             for (const [symbol, token] of chainTokens) {
                 contracts.push({
                     address: token.address,
-                    abi: ERC20_ABI,
+                    abi: erc20Abi,
                     functionName: 'balanceOf',
                     args: [address],
                     chainId,
