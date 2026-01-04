@@ -1,12 +1,13 @@
-import { TOKEN_METADATA, type TokenSymbol } from '@/lib/constants';
-
 interface ProgressBarProps {
     value: number; // 0 to 100
-    token: TokenSymbol;
+    classes: {
+        foreground: string;
+        background: string;
+    };
 }
 
-export function ProgressBar({ value, token }: ProgressBarProps) {
-    const { foreground, background } = TOKEN_METADATA[token].classes;
+export function ProgressBar({ value, classes }: ProgressBarProps) {
+    const { foreground, background } = classes;
     const percentage = Math.min(Math.max(value, 0), 100);
 
     const textStyle = {

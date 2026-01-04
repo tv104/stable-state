@@ -68,7 +68,10 @@ export function TokenBreakdown({ balances, isLoading, error }: TokenBreakdownPro
                                 </td>
                                 <td>
                                     <div className="flex items-center gap-3">
-                                        <ProgressBar value={token.allocation} token={token.symbol} />
+                                        <ProgressBar
+                                            value={token.allocation}
+                                            classes={TOKEN_METADATA[token.symbol].classes}
+                                        />
                                     </div>
                                 </td>
                             </tr>
