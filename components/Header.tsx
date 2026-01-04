@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { ConnectButton } from './ConnectButton';
+import { MockDataControls } from './MockDataControls';
 
 export function Header() {
     return (
@@ -15,7 +16,10 @@ export function Header() {
                         className="h-10 w-auto"
                     />
                 </div>
-                <ConnectButton />
+                <div className="flex items-center gap-4">
+                    <MockDataControls />
+                    <ConnectButton />
+                </div>
             </div>
         </header>
     );

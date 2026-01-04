@@ -2,12 +2,14 @@ import { useConnection, useReadContracts } from 'wagmi'
 import { formatUnits, erc20Abi } from 'viem'
 import { useMemo } from 'react'
 import { SUPPORTED_CHAIN_IDS, type TokenSymbol, getChainTokenEntries } from '@/lib/constants'
+import { useMockDataStore } from '@/lib/store'
 
 export function useStableBalances() {
     const { address } = useConnection()
+    const { isMockDataEnabled, mockBalances } = useMockDataStore()
 
     const { contracts, meta } = useMemo(() => {
-        if (!address) {
+        if (!address && !isMockDataEnabled) {
             return {
                 contracts: [],
                 meta: []
@@ -33,17 +35,21 @@ export function useStableBalances() {
             }
         }
         return { contracts, meta }
-    }, [address])
+    }, [address, isMockDataEnabled])
 
     const { data, isLoading, error, refetch } = useReadContracts({
         contracts,
         query: {
-            enabled: !!address && contracts.length > 0,
+            enabled: (!!address || isMockDataEnabled) && contracts.length > 0,
             staleTime: 30_000,
         }
     })
 
     const balances = useMemo(() => {
+        if (isMockDataEnabled) {
+            return mockBalances
+        }
+
         if (!data) return {}
 
         const result: Record<number, Partial<Record<TokenSymbol, string | null>>> = {}
@@ -61,12 +67,12 @@ export function useStableBalances() {
         })
 
         return result
-    }, [data, meta])
+    }, [data, meta, isMockDataEnabled, mockBalances])
 
     return {
         balances,
-        isLoading,
-        error,
+        isLoading: isMockDataEnabled ? false : isLoading,
+        error: isMockDataEnabled ? null : error,
         refetch
     }
 }
