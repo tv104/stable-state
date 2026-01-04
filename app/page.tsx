@@ -22,8 +22,6 @@ export default function Home() {
     }
   }, [error, showToast]);
 
-  console.log('useStableBalances()', { isLoading, error, balances })
-
   return (
     <Container>
       <div className="w-full text-center">
