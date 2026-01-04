@@ -1,5 +1,5 @@
 import { http, createConfig } from 'wagmi'
-import { mainnet, arbitrum } from 'wagmi/chains'
+import { mainnet, arbitrum, base } from 'wagmi/chains'
 import { injected, walletConnect } from 'wagmi/connectors'
 import { SUPPORTED_CHAINS } from '@/lib/constants'
 
@@ -26,5 +26,6 @@ export const config = createConfig({
     transports: {
         [mainnet.id]: http(`https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
         [arbitrum.id]: http(`https://arb-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
+        [base.id]: http(`https://base-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`),
     },
 })

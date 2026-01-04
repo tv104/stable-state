@@ -3,74 +3,70 @@ import { Paper } from './Paper';
 import { ProgressBar } from './ProgressBar';
 import { Skeleton } from './Skeleton';
 import { formatCurrency } from '@/lib/format-currency';
-import { TOKEN_METADATA, type TokenSymbol } from '@/lib/constants';
+import { CHAIN_METADATA, SupportedChainId } from '@/lib/constants/chains';
+import { ChainStat } from '@/hooks/useChainStats';
 
-interface TokenBalance {
-    symbol: TokenSymbol;
-    balance: number;
-    allocation: number; // Percentage 0-100
-}
-
-interface TokenBreakdownProps {
-    balances: TokenBalance[];
+interface ChainBreakdownProps {
+    stats: ChainStat[];
     isLoading?: boolean;
     error?: Error | null;
 }
 
-export function TokenBreakdown({ balances, isLoading, error }: TokenBreakdownProps) {
-    const getTokenIcon = (symbol: TokenSymbol) => {
-        return TOKEN_METADATA[symbol].icon;
+export function ChainBreakdown({ stats, isLoading, error }: ChainBreakdownProps) {
+    const getChainIcon = (chainId: SupportedChainId) => {
+        return CHAIN_METADATA[chainId].icon;
     };
 
-    const zeroRows = (Object.keys(TOKEN_METADATA) as TokenSymbol[]).map(symbol => ({
-        symbol,
+    const zeroRows = (Object.keys(CHAIN_METADATA).map(Number) as SupportedChainId[]).map(chainId => ({
+        chainId,
+        name: CHAIN_METADATA[chainId].name,
         balance: 0,
         allocation: 0
     }));
 
-    const dataToRender = isLoading || balances.length === 0 ? zeroRows : balances;
+    const dataToRender = isLoading || stats.length === 0 ? zeroRows : stats;
 
     return (
         <Paper className="w-full">
-            <h3 className="mb-6">Token Breakdown</h3>
+            <h3 className="mb-6">Chain Breakdown</h3>
 
             <div className="w-full overflow-x-auto">
                 <table className="data-table">
                     <thead>
                         <tr>
-                            <th className="w-36">Token</th>
+                            <th className="w-36">Chain</th>
                             <th className="w-32">Balance</th>
                             <th>Allocation</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {dataToRender.map((token) => (
-                            <tr key={token.symbol} className="group">
+                        {dataToRender.map((chain) => (
+                            <tr key={chain.chainId} className="group">
                                 <td>
                                     <div className="flex items-center gap-3">
                                         <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gray-50 p-2">
                                             <Image
-                                                src={getTokenIcon(token.symbol)}
-                                                alt={token.symbol}
+                                                src={getChainIcon(chain.chainId)}
+                                                alt={chain.name}
                                                 fill
                                                 className="object-contain"
                                             />
                                         </div>
-                                        <span className="font-medium">{token.symbol}</span>
+                                        <span className="font-medium">{chain.name}</span>
                                     </div>
                                 </td>
                                 <td className="font-mono text-sm">
                                     {isLoading ? (
                                         <Skeleton className="h-5 w-28" />
                                     ) : (
-                                        formatCurrency(token.balance)
+                                        formatCurrency(chain.balance)
                                     )}
                                 </td>
                                 <td>
                                     <div className="flex items-center gap-3">
                                         <ProgressBar
-                                            value={token.allocation}
-                                            classes={TOKEN_METADATA[token.symbol].classes}
+                                            value={chain.allocation}
+                                            classes={CHAIN_METADATA[chain.chainId].classes}
                                         />
                                     </div>
                                 </td>

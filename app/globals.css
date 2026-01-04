@@ -4,9 +4,15 @@
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-foreground: var(--foreground);
+
   --color-token-usdc: var(--token-usdc);
   --color-token-usdt: var(--token-usdt);
   --color-token-usde: var(--token-usde);
+
+  --color-chain-mainnet: var(--chain-mainnet);
+  --color-chain-arbitrum: var(--chain-arbitrum);
+  --color-chain-base: var(--chain-base);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,9 +22,14 @@
     --background: #f3f4f6;
     --surface: #fefefc;
     --foreground: #171717;
+
     --token-usdc: #57728f;
     --token-usdt: #50af95;
     --token-usde: #262626;
+
+    --chain-mainnet: #393939;
+    --chain-arbitrum: #213147;
+    --chain-base: #0000ff;
   }
 
   body {

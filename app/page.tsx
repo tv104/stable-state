@@ -1,14 +1,17 @@
 "use client";
 import { Header } from "@/components/Header";
 import { TokenBreakdown } from "@/components/TokenBreakdown";
+import { ChainBreakdown } from "@/components/ChainBreakdown";
 import { useStableBalances } from '@/hooks/useStableBalances';
 import { useMounted } from '@/hooks/useMounted';
 import { useTokenStats } from '@/hooks/useTokenStats';
+import { useChainStats } from '@/hooks/useChainStats';
 
 export default function Home() {
   const mounted = useMounted();
   const { isLoading, error, balances } = useStableBalances();
   const formattedBalances = useTokenStats(balances);
+  const chainStats = useChainStats(balances);
   console.log('useStableBalances()', { isLoading, error, balances })
 
   return (
@@ -21,6 +24,11 @@ export default function Home() {
         </div>
         <TokenBreakdown
           balances={mounted ? formattedBalances : []}
+          isLoading={mounted ? isLoading : false}
+          error={mounted ? error : null}
+        />
+        <ChainBreakdown
+          stats={mounted ? chainStats : []}
           isLoading={mounted ? isLoading : false}
           error={mounted ? error : null}
         />
