@@ -26,18 +26,20 @@ export default function Home() {
 
   return (
     <Container>
-      <div className="w-full rounded-xl bg-surface p-8 shadow-sm">
+      <div className="w-full text-center">
         <h1>Stable State</h1>
-        <h2>Demo app for displaying ETH and selected stablecoin balances</h2>
+        <h2>A demo app for displaying stablecoin balances across multiple chains</h2>
       </div>
-      <TokenBreakdown
-        balances={mounted ? formattedBalances : []}
-        isLoading={mounted ? isLoading : false}
-      />
-      <ChainBreakdown
-        stats={mounted ? chainStats : []}
-        isLoading={mounted ? isLoading : false}
-      />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+        <TokenBreakdown
+          balances={mounted ? formattedBalances : []}
+          isLoading={mounted ? isLoading : false}
+        />
+        <ChainBreakdown
+          stats={mounted ? chainStats : []}
+          isLoading={mounted ? isLoading : false}
+        />
+      </div>
     </Container>
   );
 }

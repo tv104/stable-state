@@ -15,9 +15,9 @@ export const config = createConfig({
                     metadata: {
                         name: 'Stable State',
                         description:
-                            'Demo app for displaying ETH and selected stablecoin balances on mainnet and Arbitrum',
+                            'A demo app for displaying stablecoin balances across multiple chains',
                         url: window.location.origin,
-                        icons: ['https://avatars.githubusercontent.com/u/1164786'],
+                        icons: [`${window.location.origin}/logo.webp`],
                     },
                 }),
             ]
