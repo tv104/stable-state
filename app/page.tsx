@@ -18,7 +18,8 @@ export default function Home() {
 
   useEffect(() => {
     if (error) {
-      setShowToast(true);
+      const timer = setTimeout(() => setShowToast(true), 0);
+      return () => clearTimeout(timer);
     }
   }, [error]);
 

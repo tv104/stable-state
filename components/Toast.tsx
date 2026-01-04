@@ -11,13 +11,16 @@ export function Toast({ message, type = 'info', onClose, duration = 5000 }: Toas
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        setIsVisible(true);
+        const showTimer = setTimeout(() => setIsVisible(true), 10);
         const timer = setTimeout(() => {
             setIsVisible(false);
             setTimeout(onClose, 300);
         }, duration);
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(showTimer);
+            clearTimeout(timer);
+        };
     }, [duration, onClose]);
 
     const bgColors = {
